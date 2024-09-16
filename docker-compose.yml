@@ -1,1 +1,40 @@
-# Your Solution
+
+version: '3'
+
+services:
+  db:
+    image: postgres:13
+    container_name: db
+    environment:
+      POSTGRES_USER: hiichloee
+      POSTGRES_PASSWORD: 6zNXaWkwpu0VLbK7P5mCRPIkVJcq43dY
+      POSTGRES_DB: chloe_sit722_55is
+    ports:
+      - "5432:5432"
+    restart: always
+
+  book_catalog:
+    build:
+      context: ./book_catalog
+      dockerfile: Dockerfile
+    container_name: book_catalog
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://hiichloee:6zNXaWkwpu0VLbK7P5mCRPIkVJcq43dY@dpg-crjt8rd2ng1s73fkfdcg-a.singapore-postgres.render.com/chloe_sit722_55is
+    depends_on:
+      - db
+    restart: always
+
+  inventory_management:
+    build:
+      context: ./inventory_management
+      dockerfile: Dockerfile
+    container_name: inventory_management
+    ports:
+      - "8001:8001"
+    environment:
+      - DATABASE_URL=postgresql://hiichloee:6zNXaWkwpu0VLbK7P5mCRPIkVJcq43dY@dpg-crjt8rd2ng1s73fkfdcg-a.singapore-postgres.render.com/chloe_sit722_55is
+    depends_on:
+      - db
+    restart: always
